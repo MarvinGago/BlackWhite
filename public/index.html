@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Barbería - Black White</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap">
+    
+    <link rel="stylesheet" href="./Styles/styles.css">
+
+
+</head>
+<body>
+
+    <!-- Toast Container for notifications -->
+    <div class="toast-container"></div>
+
+    <!-- ========== VISTA DE LOGIN ========== -->
+    <div id="loginView" class="login-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card login-card">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h1 class="logo-title">Black White</h1>
+                                <p class="logo-subtitle">BARBERÍA DE CLASE</p>
+                            </div>
+
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label for="loginEmail" class="form-label fw-bold">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="loginEmail" value="admin@barberia.com" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="loginPassword" class="form-label fw-bold">Contraseña</label>
+                                    <input type="password" class="form-control" id="loginPassword" value="admin123" required>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        Recordarme
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-negro w-100">Iniciar Sesión</button>
+                            </form>
+
+                            <div class="text-center mt-3">
+                                <a href="#" class="text-dorado text-decoration-none" onclick="showNotification('Funcionalidad disponible próximamente', 'info')">¿Olvidó su contraseña?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== VISTA DE MENÚ ========== -->
+    <div id="menuView" class="menu-container hidden">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="menu-title text-white">Black White</h1>
+                <p class="text-dorado fs-5" style="letter-spacing: 3px;">SISTEMA DE GESTIÓN</p>
+            </div>
+
+            <div class="card mb-4" style="background-color: var(--blanco); border-left: 5px solid var(--dorado);">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-0">¡Bienvenido, <span class="text-dorado" id="userName">Administrador</span>!</h3>
+                        <p class="mb-0 text-muted">Selecciona un módulo para comenzar</p>
+                    </div>
+                    <button class="btn btn-outline-dark" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('clientes')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-people-fill module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Clientes</h3>
+                            <p class="card-text text-muted">Gestiona la base de datos de clientes, registros, historial y membresías</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('administrativo')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-gear-fill module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Administrativo</h3>
+                            <p class="card-text text-muted">Configuración del sistema, empleados, sucursales e inventario</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('citas')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-calendar-check-fill module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Citas</h3>
+                            <p class="card-text text-muted">Agenda de reservaciones, calendario y programación de servicios</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('facturacion')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-cash-coin module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Facturación</h3>
+                            <p class="card-text text-muted">Control de ingresos, pagos, transacciones y registros contables</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('reportes')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-graph-up-arrow module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Reportes</h3>
+                            <p class="card-text text-muted">Estadísticas, análisis de rendimiento y métricas del negocio</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('marketing')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-megaphone-fill module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Marketing</h3>
+                            <p class="card-text text-muted">Campañas promocionales, estrategias y fidelización de clientes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('servicios')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-scissors module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Servicios</h3>
+                            <p class="card-text text-muted">Catálogo de servicios, precios, duraciones y descripciones</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card module-card h-100" onclick="openModule('asistencias')">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-clock-fill module-icon d-block mb-3"></i>
+                            <h3 class="card-title">Asistencias</h3>
+                            <p class="card-text text-muted">Control de asistencia, puntualidad y horarios del personal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE CLIENTES ========== -->
+    <div id="clientesView" class="menu-container hidden">
+        <div class="container-fluid">
+            <!-- Header mejorado -->
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-people-fill me-2"></i>Gestión de Clientes
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <!-- Tabs de navegación -->
+            <ul class="nav nav-tabs mb-4" id="clientesTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="registrar-tab" data-bs-toggle="tab" data-bs-target="#registrar" type="button">
+                        <i class="bi bi-person-plus me-2"></i>Registrar Cliente
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="editar-tab" data-bs-toggle="tab" data-bs-target="#editar" type="button">
+                        <i class="bi bi-pencil me-2"></i>Editar Cliente
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="buscar-tab" data-bs-toggle="tab" data-bs-target="#buscar" type="button">
+                        <i class="bi bi-search me-2"></i>Buscar Clientes
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button">
+                        <i class="bi bi-list-ul me-2"></i>Lista de Clientes
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Contenido de los tabs -->
+            <div class="tab-content" id="clientesTabContent">
+                <!-- Tab: Registrar -->
+                <div class="tab-pane fade show active" id="registrar" role="tabpanel">
+                    <div class="content-box-custom">
+                        <h3>Registrar Nuevo Cliente</h3>
+                        <form id="registerClientForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="clientName" class="form-label fw-bold">Nombre Completo *</label>
+                                    <input type="text" class="form-control" id="clientName" required>
+                                    <div class="invalid-feedback" id="clientNameError"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="clientEmail" class="form-label fw-bold">Correo Electrónico *</label>
+                                    <input type="email" class="form-control" id="clientEmail" required>
+                                    <div class="invalid-feedback" id="clientEmailError"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="clientPhone" class="form-label fw-bold">Teléfono</label>
+                                    <input type="tel" class="form-control" id="clientPhone">
+                                    <div class="invalid-feedback" id="clientPhoneError"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="clientAddress" class="form-label fw-bold">Dirección</label>
+                                    <input type="text" class="form-control" id="clientAddress">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-dorado">
+                                    <i class="bi bi-save me-2"></i>Guardar Cliente
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Editar -->
+                <div class="tab-pane fade" id="editar" role="tabpanel">
+                    <div class="content-box-custom">
+                        <h3>Editar Cliente</h3>
+                        <form id="editClientForm">
+                            <div class="mb-3">
+                                <label for="editClientSelect" class="form-label fw-bold">Seleccionar Cliente</label>
+                                <select class="form-select" id="editClientSelect">
+                                    <option value="">Seleccione un cliente...</option>
+                                </select>
+                            </div>
+                            <div id="editClientFields" class="hidden">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="editClientName" class="form-label fw-bold">Nombre Completo</label>
+                                        <input type="text" class="form-control" id="editClientName">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editClientEmail" class="form-label fw-bold">Correo Electrónico</label>
+                                        <input type="email" class="form-control" id="editClientEmail">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editClientPhone" class="form-label fw-bold">Teléfono</label>
+                                        <input type="tel" class="form-control" id="editClientPhone">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editClientAddress" class="form-label fw-bold">Dirección</label>
+                                        <input type="text" class="form-control" id="editClientAddress">
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-dorado">
+                                        <i class="bi bi-save me-2"></i>Actualizar Cliente
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Tab: Buscar -->
+                <div class="tab-pane fade" id="buscar" role="tabpanel">
+                    <div class="content-box-custom">
+                        <h3>Buscar Clientes</h3>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-dorado">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="searchClient" placeholder="Buscar por nombre, correo o teléfono...">
+                        </div>
+                        <div id="searchResults"></div>
+                    </div>
+                </div>
+
+                <!-- Tab: Lista -->
+                <div class="tab-pane fade" id="lista" role="tabpanel">
+                    <div class="content-box-custom">
+                        <h3>Lista de Clientes</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Teléfono</th>
+                                        <th>Servicios</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientsTableBody">
+                                    <!-- Mensaje cuando está vacío -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO ADMINISTRATIVO ========== -->
+    <div id="administrativoView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-gear-fill me-2"></i>Panel Administrativo
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#admin-usuarios">
+                        <i class="bi bi-person-plus me-2"></i>Usuarios
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#admin-permisos">
+                        <i class="bi bi-shield-check me-2"></i>Permisos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#admin-bitacora">
+                        <i class="bi bi-journal-text me-2"></i>Bitácora
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#admin-config">
+                        <i class="bi bi-sliders me-2"></i>Configuración
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#admin-panel">
+                        <i class="bi bi-speedometer2 me-2"></i>Panel de Control
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Tab: Usuarios -->
+                <div class="tab-pane fade show active" id="admin-usuarios">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="content-box-custom">
+                                <h3>Crear Nuevo Usuario</h3>
+                                <form id="createUserForm">
+                                    <div class="mb-3">
+                                        <label for="userName" class="form-label fw-bold">Nombre de Usuario *</label>
+                                        <input type="text" class="form-control" id="userName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="userEmail" class="form-label fw-bold">Correo Electrónico *</label>
+                                        <input type="email" class="form-control" id="userEmail" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="userRole" class="form-label fw-bold">Rol *</label>
+                                        <select class="form-select" id="userRole" required>
+                                            <option value="">Seleccionar rol...</option>
+                                            <option value="admin">Administrador</option>
+                                            <option value="barbero">Barbero</option>
+                                            <option value="recepcionista">Recepcionista</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="userPassword" class="form-label fw-bold">Contraseña *</label>
+                                        <input type="password" class="form-control" id="userPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-dorado">
+                                        <i class="bi bi-save me-2"></i>Crear Usuario
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="content-box-custom">
+                                <h3>Lista de Usuarios</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-custom">
+                                        <thead>
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Rol</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="usersTableBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Permisos -->
+                <div class="tab-pane fade" id="admin-permisos">
+                    <div class="content-box-custom">
+                        <h3>Modificar Permisos de Usuario</h3>
+                        <form id="modifyPermissionsForm">
+                            <div class="mb-3">
+                                <label for="selectUserPermissions" class="form-label fw-bold">Seleccionar Usuario</label>
+                                <select class="form-select" id="selectUserPermissions">
+                                    <option value="">Seleccione un usuario...</option>
+                                </select>
+                            </div>
+                            <div id="permissionsFields" class="hidden">
+                                <h5 class="mb-3">Permisos Asignados:</h5>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="permClientes" value="clientes">
+                                            <label class="form-check-label" for="permClientes">
+                                                Gestión de Clientes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="permCitas" value="citas">
+                                            <label class="form-check-label" for="permCitas">
+                                                Gestión de Citas
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="permFacturacion" value="facturacion">
+                                            <label class="form-check-label" for="permFacturacion">
+                                                Facturación
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="permReportes" value="reportes">
+                                            <label class="form-check-label" for="permReportes">
+                                                Reportes
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-dorado mt-3">
+                                    <i class="bi bi-save me-2"></i>Actualizar Permisos
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Bitácora -->
+                <div class="tab-pane fade" id="admin-bitacora">
+                    <div class="content-box-custom">
+                        <h3>Bitácora de Eventos</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha/Hora</th>
+                                        <th>Usuario</th>
+                                        <th>Acción</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bitacoraTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Configuración -->
+                <div class="tab-pane fade" id="admin-config">
+                    <div class="content-box-custom">
+                        <h3>Configuración General del Sistema</h3>
+                        <form id="generalConfigForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="configBusinessName" class="form-label fw-bold">Nombre del Negocio</label>
+                                    <input type="text" class="form-control" id="configBusinessName" value="Black White">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="configPhone" class="form-label fw-bold">Teléfono</label>
+                                    <input type="tel" class="form-control" id="configPhone" value="+506 2222-3333">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="configEmail" class="form-label fw-bold">Email</label>
+                                    <input type="email" class="form-control" id="configEmail" value="info@blackwhite.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="configHours" class="form-label fw-bold">Horario</label>
+                                    <input type="text" class="form-control" id="configHours" value="9:00 AM - 8:00 PM">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="configAddress" class="form-label fw-bold">Dirección</label>
+                                    <input type="text" class="form-control" id="configAddress" value="San José, Costa Rica">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="configTax" class="form-label fw-bold">Impuesto (%)</label>
+                                    <input type="number" class="form-control" id="configTax" value="13" min="0" max="100">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Guardar Configuración
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Panel de Control -->
+                <div class="tab-pane fade" id="admin-panel">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-calendar-check text-dorado" style="font-size: 3em;"></i>
+                                    <h3 class="mt-3">18</h3>
+                                    <p class="text-muted mb-0">Citas del Día</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-cash-coin text-success" style="font-size: 3em;"></i>
+                                    <h3 class="mt-3">₡125,500</h3>
+                                    <p class="text-muted mb-0">Ventas del Día</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-people text-primary" style="font-size: 3em;"></i>
+                                    <h3 class="mt-3">12</h3>
+                                    <p class="text-muted mb-0">Usuarios Activos</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3em;"></i>
+                                    <h3 class="mt-3">3</h3>
+                                    <p class="text-muted mb-0">Stock Bajo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE CITAS ========== -->
+    <div id="citasView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Gestión de Citas
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#citas-crear">
+                        <i class="bi bi-plus-circle me-2"></i>Crear Cita
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#citas-agenda">
+                        <i class="bi bi-calendar3 me-2"></i>Agenda
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#citas-espera">
+                        <i class="bi bi-hourglass-split me-2"></i>Lista de Espera
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#citas-config">
+                        <i class="bi bi-sliders me-2"></i>Configuración
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Tab: Crear Cita -->
+                <div class="tab-pane fade show active" id="citas-crear">
+                    <div class="content-box-custom">
+                        <h3>Crear Nueva Cita</h3>
+                        <form id="createAppointmentForm">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="appointmentClient" class="form-label fw-bold">Cliente *</label>
+                                    <select class="form-select" id="appointmentClient" required>
+                                        <option value="">Seleccione un cliente...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="appointmentDate" class="form-label fw-bold">Fecha *</label>
+                                    <input type="date" class="form-control" id="appointmentDate" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="appointmentTime" class="form-label fw-bold">Hora *</label>
+                                    <input type="time" class="form-control" id="appointmentTime" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="appointmentBarber" class="form-label fw-bold">Barbero *</label>
+                                    <select class="form-select" id="appointmentBarber" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="Roberto Solís">Roberto Solís</option>
+                                        <option value="Mario López">Mario López</option>
+                                        <option value="Carlos Jiménez">Carlos Jiménez</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="appointmentService1" class="form-label fw-bold">Servicio 1 *</label>
+                                    <select class="form-select" id="appointmentService1" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="Corte Clásico" data-duration="30" data-price="8000">Corte Clásico - 30 min - ₡8,000</option>
+                                        <option value="Corte + Barba" data-duration="45" data-price="12000">Corte + Barba - 45 min - ₡12,000</option>
+                                        <option value="Afeitado Premium" data-duration="25" data-price="6500">Afeitado Premium - 25 min - ₡6,500</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="appointmentService2" class="form-label fw-bold">Servicio 2 (Opcional)</label>
+                                    <select class="form-select" id="appointmentService2">
+                                        <option value="">Sin servicio adicional</option>
+                                        <option value="Corte Clásico" data-duration="30" data-price="8000">Corte Clásico - 30 min - ₡8,000</option>
+                                        <option value="Afeitado Premium" data-duration="25" data-price="6500">Afeitado Premium - 25 min - ₡6,500</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="alert alert-info mt-3">
+                                <strong>Duración estimada:</strong> <span id="estimatedDuration">0</span> minutos
+                                <br>
+                                <strong>Costo estimado:</strong> ₡<span id="estimatedCost">0</span>
+                            </div>
+                            <button type="submit" class="btn btn-dorado">
+                                <i class="bi bi-save me-2"></i>Crear Cita
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Agenda -->
+                <div class="tab-pane fade" id="citas-agenda">
+                    <div class="content-box-custom">
+                        <h3>Agenda de Citas</h3>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="filterDate" class="form-label fw-bold">Filtrar por Fecha</label>
+                                <input type="date" class="form-control" id="filterDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="filterBarber" class="form-label fw-bold">Filtrar por Barbero</label>
+                                <select class="form-select" id="filterBarber">
+                                    <option value="">Todos los barberos</option>
+                                    <option value="Roberto Solís">Roberto Solís</option>
+                                    <option value="Mario López">Mario López</option>
+                                    <option value="Carlos Jiménez">Carlos Jiménez</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha/Hora</th>
+                                        <th>Cliente</th>
+                                        <th>Servicios</th>
+                                        <th>Barbero</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Lista de Espera -->
+                <div class="tab-pane fade" id="citas-espera">
+                    <div class="content-box-custom">
+                        <h3>Agregar a Lista de Espera</h3>
+                        <form id="createWaitingListForm">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="waitingClient" class="form-label fw-bold">Cliente *</label>
+                                    <select class="form-select" id="waitingClient" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="waitingService" class="form-label fw-bold">Servicio *</label>
+                                    <select class="form-select" id="waitingService" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="Corte Clásico">Corte Clásico</option>
+                                        <option value="Corte + Barba">Corte + Barba</option>
+                                        <option value="Afeitado Premium">Afeitado Premium</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="waitingDate" class="form-label fw-bold">Fecha/Hora Solicitada</label>
+                                    <input type="datetime-local" class="form-control" id="waitingDate">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-plus-circle me-2"></i>Agregar a Lista
+                            </button>
+                        </form>
+
+                        <h4 class="mt-4">Clientes en Lista de Espera</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Servicio</th>
+                                        <th>Fecha Solicitada</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="waitingListTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Configuración -->
+                <div class="tab-pane fade" id="citas-config">
+                    <div class="content-box-custom">
+                        <h3>Configuración de Tiempos de Buffer</h3>
+                        <form id="bufferConfigForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="bufferMinutes" class="form-label fw-bold">Minutos de Buffer entre Citas *</label>
+                                    <input type="number" class="form-control" id="bufferMinutes" value="15" min="0" max="60" required>
+                                    <small class="text-muted">Tiempo de preparación entre cada cita</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bufferGlobal" class="form-label fw-bold">Buffer Global (minutos)</label>
+                                    <input type="number" class="form-control" id="bufferGlobal" value="10" min="0" max="30">
+                                    <small class="text-muted">Aplica a todas las citas del sistema</small>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Guardar Configuración
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE FACTURACIÓN ========== -->
+    <div id="facturacionView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-cash-coin me-2"></i>Facturación
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fact-crear">
+                        <i class="bi bi-file-earmark-plus me-2"></i>Nueva Factura
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fact-lista">
+                        <i class="bi bi-list-ul me-2"></i>Lista de Facturas
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fact-cierre">
+                        <i class="bi bi-calculator me-2"></i>Cierre de Caja
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Tab: Nueva Factura -->
+                <div class="tab-pane fade show active" id="fact-crear">
+                    <div class="content-box-custom">
+                        <h3>Generar Nueva Factura</h3>
+                        <form id="createInvoiceForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="invoiceClient" class="form-label fw-bold">Cliente *</label>
+                                    <select class="form-select" id="invoiceClient" required>
+                                        <option value="">Seleccione un cliente...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="invoiceBarber" class="form-label fw-bold">Barbero Atendió *</label>
+                                    <select class="form-select" id="invoiceBarber" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="Roberto Solís">Roberto Solís</option>
+                                        <option value="Mario López">Mario López</option>
+                                        <option value="Carlos Jiménez">Carlos Jiménez</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h5 class="mt-4">Servicios</h5>
+                            <div id="invoiceServices">
+                                <div class="row g-3 mb-3 service-row">
+                                    <div class="col-md-8">
+                                        <label class="form-label fw-bold">Servicio</label>
+                                        <select class="form-select service-select" required>
+                                            <option value="">Seleccione...</option>
+                                            <option value="Corte Clásico" data-price="8000">Corte Clásico - ₡8,000</option>
+                                            <option value="Corte + Barba" data-price="12000">Corte + Barba - ₡12,000</option>
+                                            <option value="Afeitado Premium" data-price="6500">Afeitado Premium - ₡6,500</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-bold">Precio</label>
+                                        <input type="number" class="form-control service-price" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mb-3" onclick="addServiceRow()">
+                                <i class="bi bi-plus-circle me-1"></i>Agregar Servicio
+                            </button>
+
+                            <h5 class="mt-3">Propina (Opcional)</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="tipAmount" class="form-label fw-bold">Monto de Propina</label>
+                                    <input type="number" class="form-control" id="tipAmount" min="0" value="0">
+                                    <small class="text-muted">La propina se suma al total y se asigna al barbero</small>
+                                </div>
+                            </div>
+
+                            <h5 class="mt-3">Método de Pago</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="paymentMethod" class="form-label fw-bold">Método de Pago *</label>
+                                    <select class="form-select" id="paymentMethod" required>
+                                        <option value="">Seleccione método...</option>
+                                        <option value="efectivo">Efectivo</option>
+                                        <option value="sinpe">SINPE Móvil</option>
+                                        <option value="tarjeta">Tarjeta</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 hidden" id="sinpeReferenceGroup">
+                                    <label for="sinpeReference" class="form-label fw-bold">Referencia SINPE</label>
+                                    <input type="text" class="form-control" id="sinpeReference">
+                                </div>
+                            </div>
+
+                            <div id="cashPaymentFields" class="hidden">
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-6">
+                                        <label for="cashReceived" class="form-label fw-bold">Efectivo Recibido</label>
+                                        <input type="number" class="form-control" id="cashReceived" min="0">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Cambio a Devolver</label>
+                                        <input type="number" class="form-control" id="changeAmount" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-warning mt-4">
+                                <h5>Resumen de Factura</h5>
+                                <p class="mb-1"><strong>Subtotal Servicios:</strong> ₡<span id="subtotalAmount">0</span></p>
+                                <p class="mb-1"><strong>Propina:</strong> ₡<span id="tipDisplay">0</span></p>
+                                <h4 class="mb-0 text-dorado"><strong>TOTAL:</strong> ₡<span id="totalAmount">0</span></h4>
+                            </div>
+
+                            <button type="submit" class="btn btn-dorado">
+                                <i class="bi bi-save me-2"></i>Generar Factura
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Lista de Facturas -->
+                <div class="tab-pane fade" id="fact-lista">
+                    <div class="content-box-custom">
+                        <h3>Gestión de Facturas</h3>
+                        <div class="alert alert-info">
+                            <strong>Estado del Sistema:</strong> 
+                            <span id="cashRegisterStatus" class="badge badge-activo ms-2">CAJA ABIERTA</span>
+                            <button type="button" class="btn btn-sm btn-dorado ms-3" onclick="toggleCashRegister()">
+                                Cambiar Estado
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Factura</th>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th>Barbero</th>
+                                        <th>Total</th>
+                                        <th>Método</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoicesTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Cierre de Caja -->
+                <div class="tab-pane fade" id="fact-cierre">
+                    <div class="content-box-custom">
+                        <h3>Cierre de Caja</h3>
+                        <form id="closeCashForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="closeDate" class="form-label fw-bold">Fecha de Cierre</label>
+                                    <input type="date" class="form-control" id="closeDate" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-file-earmark-pdf me-2"></i>Generar Cierre de Caja (PDF)
+                            </button>
+                        </form>
+
+                        <div id="cashSummary" class="hidden mt-4">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h6>Total Facturas</h6>
+                                            <h3 id="summaryInvoices">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h6>Total Efectivo</h6>
+                                            <h3>₡<span id="summaryCash">0</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h6>Total SINPE</h6>
+                                            <h3>₡<span id="summarySinpe">0</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h6>Total Tarjeta</h6>
+                                            <h3>₡<span id="summaryCard">0</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-success mt-3">
+                                <h4>TOTAL DEL DÍA: ₡<span id="summaryTotal">0</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE REPORTES ========== -->
+    <div id="reportesView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-graph-up-arrow me-2"></i>Reportes y Estadísticas
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-cash-stack text-dorado me-2"></i>Reporte de Ingresos
+                            </h5>
+                            <form id="incomeReportForm">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control form-control-sm" id="incomeStartDate" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control form-control-sm" id="incomeEndDate" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-dorado btn-sm mt-2 w-100">Generar</button>
+                            </form>
+                            <div id="incomeReportResult" class="hidden mt-3">
+                                <div class="text-center">
+                                    <h3 class="text-dorado">₡<span id="totalIncome">0</span></h3>
+                                    <small class="text-muted">Total Ingresos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-bar-chart text-dorado me-2"></i>Ventas Mensuales
+                            </h5>
+                            <form id="salesChartForm">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="month" class="form-control form-control-sm" id="salesMonthStart" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="month" class="form-control form-control-sm" id="salesMonthEnd" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-dorado btn-sm mt-2 w-100">Generar Gráfico</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="salesChartResult" class="content-box-custom hidden">
+                <h3>Gráfico de Ventas</h3>
+                <div id="salesChartContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE MARKETING ========== -->
+    <div id="marketingView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-megaphone-fill me-2"></i>Marketing y Campañas
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mkt-campanas">
+                        <i class="bi bi-bullseye me-2"></i>Campañas
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mkt-promociones">
+                        <i class="bi bi-tag me-2"></i>Promociones
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mkt-cupones">
+                        <i class="bi bi-ticket-perforated me-2"></i>Cupones
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Tab: Campañas -->
+                <div class="tab-pane fade show active" id="mkt-campanas">
+                    <div class="content-box-custom">
+                        <h3>Crear Nueva Campaña</h3>
+                        <form id="createCampaignForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="campaignName" class="form-label fw-bold">Nombre de Campaña *</label>
+                                    <input type="text" class="form-control" id="campaignName" required placeholder="Ej: Black Friday 2025">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="campaignType" class="form-label fw-bold">Tipo de Campaña *</label>
+                                    <select class="form-select" id="campaignType" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="descuento">Descuento Automático</option>
+                                        <option value="promocion">Promoción Especial</option>
+                                        <option value="fidelizacion">Fidelización</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="campaignDiscount" class="form-label fw-bold">Descuento (%)</label>
+                                    <input type="number" class="form-control" id="campaignDiscount" min="0" max="100">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="campaignStart" class="form-label fw-bold">Fecha Inicio</label>
+                                    <input type="date" class="form-control" id="campaignStart" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="campaignEnd" class="form-label fw-bold">Fecha Fin</label>
+                                    <input type="date" class="form-control" id="campaignEnd" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Guardar Campaña
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Promociones -->
+                <div class="tab-pane fade" id="mkt-promociones">
+                    <div class="content-box-custom">
+                        <h3>Crear Promoción por Tiempo Limitado</h3>
+                        <form id="createPromotionForm">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="promoService" class="form-label fw-bold">Servicio *</label>
+                                    <select class="form-select" id="promoService" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="Corte Clásico">Corte Clásico</option>
+                                        <option value="Corte + Barba">Corte + Barba</option>
+                                        <option value="Afeitado Premium">Afeitado Premium</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="promoDiscount" class="form-label fw-bold">Descuento (%)</label>
+                                    <input type="number" class="form-control" id="promoDiscount" min="0" max="100" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="promoValidUntil" class="form-label fw-bold">Vigencia</label>
+                                    <input type="date" class="form-control" id="promoValidUntil" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-check-circle me-2"></i>Activar Promoción
+                            </button>
+                        </form>
+
+                        <h4 class="mt-4">Promociones Activas</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <th>Descuento</th>
+                                        <th>Precio Original</th>
+                                        <th>Precio Promo</th>
+                                        <th>Vigencia</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activePromotionsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Cupones -->
+                <div class="tab-pane fade" id="mkt-cupones">
+                    <div class="content-box-custom">
+                        <h3>Crear Cupón Digital</h3>
+                        <form id="createCouponForm">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="couponCode" class="form-label fw-bold">Código de Cupón *</label>
+                                    <input type="text" class="form-control" id="couponCode" required placeholder="Ej: VERANO2025">
+                                    <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="generateCouponCode()">
+                                        <i class="bi bi-arrow-repeat me-1"></i>Generar Código
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="couponDiscount" class="form-label fw-bold">Descuento (%)</label>
+                                    <input type="number" class="form-control" id="couponDiscount" min="0" max="100" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="couponExpiry" class="form-label fw-bold">Fecha de Expiración</label>
+                                    <input type="date" class="form-control" id="couponExpiry" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Crear Cupón
+                            </button>
+                        </form>
+
+                        <h4 class="mt-4">Cupones Activos</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descuento</th>
+                                        <th>Expira</th>
+                                        <th>Usado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="couponsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE SERVICIOS ========== -->
+    <div id="serviciosView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-scissors me-2"></i>Gestión de Servicios
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#srv-crear">
+                        <i class="bi bi-plus-circle me-2"></i>Crear Servicio
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#srv-lista">
+                        <i class="bi bi-list-ul me-2"></i>Lista de Servicios
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#srv-especialidades">
+                        <i class="bi bi-star me-2"></i>Especialidades
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#srv-paquetes">
+                        <i class="bi bi-box-seam me-2"></i>Paquetes
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Tab: Crear Servicio -->
+                <div class="tab-pane fade show active" id="srv-crear">
+                    <div class="content-box-custom">
+                        <h3>Crear Nuevo Servicio</h3>
+                        <form id="createServiceForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="serviceName" class="form-label fw-bold">Nombre del Servicio *</label>
+                                    <input type="text" class="form-control" id="serviceName" required placeholder="Ej: Corte Premium">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="serviceCategory" class="form-label fw-bold">Categoría</label>
+                                    <select class="form-select" id="serviceCategory">
+                                        <option value="Corte">Corte</option>
+                                        <option value="Barba">Barba</option>
+                                        <option value="Combo">Combo</option>
+                                        <option value="Premium">Premium</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="servicePrice" class="form-label fw-bold">Precio (₡) *</label>
+                                    <input type="number" class="form-control" id="servicePrice" required min="0" placeholder="8000">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="serviceDuration" class="form-label fw-bold">Duración (minutos) *</label>
+                                    <input type="number" class="form-control" id="serviceDuration" required min="1" placeholder="30">
+                                </div>
+                                <div class="col-12">
+                                    <label for="serviceDescription" class="form-label fw-bold">Descripción</label>
+                                    <textarea class="form-control" id="serviceDescription" rows="3" placeholder="Describe el servicio..."></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Guardar Servicio
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Lista de Servicios -->
+                <div class="tab-pane fade" id="srv-lista">
+                    <div class="content-box-custom">
+                        <h3>Estado de Servicios</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Servicio</th>
+                                        <th>Categoría</th>
+                                        <th>Precio</th>
+                                        <th>Duración</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="servicesTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Especialidades -->
+                <div class="tab-pane fade" id="srv-especialidades">
+                    <div class="content-box-custom">
+                        <h3>Asignar Especialidades a Barberos</h3>
+                        <form id="assignSpecialtyForm">
+                            <div class="mb-3">
+                                <label for="selectBarber" class="form-label fw-bold">Barbero *</label>
+                                <select class="form-select" id="selectBarber" required>
+                                    <option value="">Seleccione...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Servicios Especializados</label>
+                                <div id="specialtyCheckboxes"></div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado">
+                                <i class="bi bi-save me-2"></i>Guardar Especialidades
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Paquetes -->
+                <div class="tab-pane fade" id="srv-paquetes">
+                    <div class="content-box-custom">
+                        <h3>Crear Paquete de Servicios</h3>
+                        <form id="createPackageForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="packageName" class="form-label fw-bold">Nombre del Paquete *</label>
+                                    <input type="text" class="form-control" id="packageName" required placeholder="Ej: Paquete VIP">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="packagePrice" class="form-label fw-bold">Precio del Paquete (₡) *</label>
+                                    <input type="number" class="form-control" id="packagePrice" required min="0" placeholder="15000">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Servicios Incluidos</label>
+                                    <div id="packageServicesCheckboxes"></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Crear Paquete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MÓDULO DE ASISTENCIAS ========== -->
+    <div id="asistenciasView" class="menu-container hidden">
+        <div class="container-fluid">
+            <div class="module-header-custom d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-clock-fill me-2"></i>Control de Asistencias
+                    </h2>
+                </div>
+                <button class="btn btn-dorado" onclick="backToMenu()">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Menú
+                </button>
+            </div>
+
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#asist-registrar">
+                        <i class="bi bi-clock-history me-2"></i>Registrar Asistencia
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#asist-retrasos">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Retrasos y Ausencias
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#asist-reportes">
+                        <i class="bi bi-file-earmark-text me-2"></i>Reportes
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#asist-incidencias">
+                        <i class="bi bi-file-earmark-x me-2"></i>Incidencias
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Tab: Registrar Asistencia -->
+                <div class="tab-pane fade show active" id="asist-registrar">
+                    <div class="content-box-custom">
+                        <h3>Registrar Entrada y Salida</h3>
+                        <form id="registerAttendanceForm">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="attendanceEmployee" class="form-label fw-bold">Colaborador *</label>
+                                    <select class="form-select" id="attendanceEmployee" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="attendanceDate" class="form-label fw-bold">Fecha *</label>
+                                    <input type="date" class="form-control" id="attendanceDate" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="attendanceEntryTime" class="form-label fw-bold">Hora de Entrada *</label>
+                                    <input type="time" class="form-control" id="attendanceEntryTime" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="attendanceExitTime" class="form-label fw-bold">Hora de Salida</label>
+                                    <input type="time" class="form-control" id="attendanceExitTime">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Registrar Asistencia
+                            </button>
+                        </form>
+
+                        <h4 class="mt-4">Asistencias de Hoy</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Colaborador</th>
+                                        <th>Entrada</th>
+                                        <th>Salida</th>
+                                        <th>Horas</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="todayAttendanceBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Retrasos y Ausencias -->
+                <div class="tab-pane fade" id="asist-retrasos">
+                    <div class="content-box-custom">
+                        <h3>Gestión de Retrasos y Ausencias</h3>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="card text-center bg-danger text-white">
+                                    <div class="card-body">
+                                        <h5>Retrasos del Día</h5>
+                                        <h2 id="todayLateCount">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center bg-warning text-dark">
+                                    <div class="card-body">
+                                        <h5>Ausencias del Día</h5>
+                                        <h2 id="todayAbsenceCount">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Reportes -->
+                <div class="tab-pane fade" id="asist-reportes">
+                    <div class="content-box-custom">
+                        <h3>Reportes de Asistencia</h3>
+                        <form id="attendanceReportForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="reportPeriod" class="form-label fw-bold">Período</label>
+                                    <select class="form-select" id="reportPeriod">
+                                        <option value="week">Esta semana</option>
+                                        <option value="month">Este mes</option>
+                                        <option value="custom">Personalizado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-file-earmark-bar-graph me-2"></i>Generar Reporte
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab: Incidencias -->
+                <div class="tab-pane fade" id="asist-incidencias">
+                    <div class="content-box-custom">
+                        <h3>Registro de Incidencias</h3>
+                        <form id="incidentForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="incidentEmployee" class="form-label fw-bold">Colaborador</label>
+                                    <select class="form-select" id="incidentEmployee">
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="incidentType" class="form-label fw-bold">Tipo de Incidencia *</label>
+                                    <select class="form-select" id="incidentType" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="retraso">Retraso</option>
+                                        <option value="ausencia">Ausencia</option>
+                                        <option value="falta_grave">Falta Grave</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="incidentDate" class="form-label fw-bold">Fecha</label>
+                                    <input type="date" class="form-control" id="incidentDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="incidentStatus" class="form-label fw-bold">Estado</label>
+                                    <select class="form-select" id="incidentStatus">
+                                        <option value="pendiente">Pendiente</option>
+                                        <option value="aprobada">Aprobada</option>
+                                        <option value="rechazada">Rechazada</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="incidentObservations" class="form-label fw-bold">Observaciones</label>
+                                    <textarea class="form-control" id="incidentObservations" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dorado mt-3">
+                                <i class="bi bi-save me-2"></i>Registrar Incidencia
+                            </button>
+                        </form>
+
+                        <h4 class="mt-4">Incidencias Registradas</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Colaborador</th>
+                                        <th>Tipo</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incidentsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación (Bootstrap) -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalTitle">Confirmar Acción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="confirmModalBody">
+                    ¿Está seguro de realizar esta acción?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-dorado" id="confirmModalBtn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Información -->
+    <div class="modal fade" id="infoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalTitle">Información</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="infoModalBody">
+                    Información
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dorado" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Scripts del sistema -->
+<script src="./api-functions.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
