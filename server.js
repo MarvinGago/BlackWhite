@@ -53,6 +53,21 @@ app.post('/api/clientes', async (req, res) => {
         const addressValue = address && address.trim() !== '' ? address.trim() : null;
         
         const pool = await getPool();
+        
+        // 🔍 VALIDAR SI EL EMAIL YA EXISTE (solo si no es NULL)
+        if (emailValue) {
+            const checkEmail = await pool.request()
+                .input('email', sql.NVarChar, emailValue)
+                .query('SELECT ClientId FROM Clients WHERE Email = @email');
+            
+            if (checkEmail.recordset.length > 0) {
+                return res.status(400).json({ 
+                    success: false,
+                    error: 'Ya existe un cliente con ese correo electrónico' 
+                });
+            }
+        }
+        
         const result = await pool.request()
             .input('firstName', sql.NVarChar, firstName)
             .input('lastName', sql.NVarChar, lastName)
@@ -74,7 +89,10 @@ app.post('/api/clientes', async (req, res) => {
         });
     } catch (err) {
         console.error('Error al crear cliente:', err);
-        res.status(500).json({ error: 'Error al crear cliente' });
+        res.status(500).json({ 
+            success: false,
+            error: 'Error al crear cliente' 
+        });
     }
 });
 
@@ -94,6 +112,22 @@ app.put('/api/clientes/:id', async (req, res) => {
         const addressValue = address && address.trim() !== '' ? address.trim() : null;
         
         const pool = await getPool();
+        
+        // 🔍 VALIDAR SI EL EMAIL YA EXISTE EN OTRO CLIENTE (solo si no es NULL)
+        if (emailValue) {
+            const checkEmail = await pool.request()
+                .input('email', sql.NVarChar, emailValue)
+                .input('clientId', sql.Int, id)
+                .query('SELECT ClientId FROM Clients WHERE Email = @email AND ClientId != @clientId');
+            
+            if (checkEmail.recordset.length > 0) {
+                return res.status(400).json({ 
+                    success: false,
+                    error: 'Ya existe otro cliente con ese correo electrónico' 
+                });
+            }
+        }
+        
         await pool.request()
             .input('clientId', sql.Int, id)
             .input('firstName', sql.NVarChar, firstName)
@@ -114,7 +148,10 @@ app.put('/api/clientes/:id', async (req, res) => {
         res.json({ success: true, message: 'Cliente actualizado' });
     } catch (err) {
         console.error('Error al actualizar cliente:', err);
-        res.status(500).json({ error: 'Error al actualizar cliente' });
+        res.status(500).json({ 
+            success: false,
+            error: 'Error al actualizar cliente' 
+        });
     }
 });
 
